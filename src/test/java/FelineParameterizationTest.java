@@ -26,7 +26,7 @@ public class FelineParameterizationTest {
     }
 
     @Test
-    public void getKittensWithArgumentReturnIntPositiveResult() {
+    public void getKittensWithArgumentReturnInt() {
         Feline feline = new Feline();
         int actual = feline.getKittens(kittensCount);
         assertEquals(actual, expectedKittensCount);

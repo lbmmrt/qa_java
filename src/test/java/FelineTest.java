@@ -11,28 +11,28 @@ public class FelineTest {
     private final Feline feline = new Feline();
 
     @Test
-    public void eatMeatReturnsListFoodAnimalsBirdsFishPositiveResult() throws Exception {
+    public void eatMeatReturnsListFoodAnimalsBirdsFish() throws Exception {
         List<String> actual = feline.eatMeat();
         List<String> expected = List.of("Животные", "Птицы", "Рыба");
         assertEquals(actual, expected);
     }
 
     @Test
-    public void getFamilyReturnFelinePositiveResult() {
+    public void getFamilyReturnFeline() {
         String actual = feline.getFamily();
         String expected = "Кошачьи";
         assertEquals(actual, expected);
     }
 
     @Test
-    public void getKittensWithArgumentReturnIntPositiveResult() {
+    public void getKittensWithArgumentReturnInt() {
         int actual = feline.getKittens(9);
         int expected = 9;
         assertEquals(actual, expected);
     }
 
     @Test
-    public void getKittensReturnNumberOnePositiveResult() {
+    public void getKittensReturnNumberOne() {
         int actual = feline.getKittens();
         int expected = 1;
         assertEquals(actual, expected);

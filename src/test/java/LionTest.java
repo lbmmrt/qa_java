@@ -20,26 +20,26 @@ public class LionTest {
     private Lion lion;
 
     @Test
-    public void sexMaleReturnTruePositiveResult() throws Exception {
+    public void sexMaleReturnTrue() throws Exception {
         lion = new Lion("Самец", feline);
         boolean actual = lion.doesHaveMane();
         assertTrue(actual);
     }
 
     @Test
-    public void sexFemaleReturnTruePositiveResult() throws Exception {
+    public void sexFemaleReturnTrue() throws Exception {
         lion = new Lion("Самка", feline);
         boolean actual = lion.doesHaveMane();
         assertFalse(actual);
     }
 
     @Test(expected = Exception.class)
-    public void incorrectSexThrowsExceptionPositiveResult() throws Exception {
+    public void incorrectSexThrowsException() throws Exception {
         lion = new Lion("Самочка", feline);
     }
 
     @Test
-    public void getKittensReturnNumberOnePositiveResult() throws Exception {
+    public void getKittensReturnNumberOne() throws Exception {
         lion = new Lion("Самец", feline);
         Mockito.when(feline.getKittens()).thenReturn(1);
         int actual = lion.getKittens();
@@ -48,7 +48,7 @@ public class LionTest {
     }
 
     @Test
-    public void eatMeatReturnsListFoodAnimalsBirdsFishPositiveResult() throws Exception {
+    public void eatMeatReturnsListFoodAnimalsBirdsFish() throws Exception {
         lion = new Lion("Самец", feline);
         List<String> foodList = List.of("Животные", "Птицы", "Рыба");
         Mockito.when(feline.getFood(any())).thenReturn(foodList);

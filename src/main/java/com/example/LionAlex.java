@@ -4,11 +4,8 @@ import java.util.List;
 
 public class LionAlex extends Lion {
 
-    private Feline feline;
-
     public LionAlex(Feline feline) throws Exception {
         super("Самец", feline);
-        this.feline = feline;
     }
 
     public List<String> getFriends() {
@@ -19,12 +16,8 @@ public class LionAlex extends Lion {
         return "Нью-Йоркский зоопарк";
     }
 
-    public int getKittens(int kittensCount) {
-        return kittensCount;
-    }
-
     @Override
     public int getKittens() {
-        return getKittens(0);
+        return 0;
     }
 }

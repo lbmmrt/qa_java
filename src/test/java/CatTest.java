@@ -27,14 +27,14 @@ public class CatTest {
     }
 
     @Test
-    public void getSoundReturnMeowPositiveResult() {
+    public void getSoundReturnMeow() {
         String actual = cat.getSound();
         String expected = "Мяу";
         assertEquals(expected, actual);
     }
 
     @Test
-    public void getFoodReturnListFoodMilkCucumberFishPositiveResult() throws Exception {
+    public void getFoodReturnListFoodMilkCucumberFish() throws Exception {
         List<String> foodList = List.of("Молоко", "Огурец", "Рыба");
         Mockito.when(feline.eatMeat()).thenReturn(foodList);
         List<String> actual = cat.getFood();

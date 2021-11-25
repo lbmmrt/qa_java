@@ -26,28 +26,21 @@ public class LionAlexTest {
     }
 
     @Test
-    public void getFriendsReturnFriendsNameMartyMelmanGloriaPositiveResult() {
+    public void getFriendsReturnFriendsNameMartyMelmanGloria() {
         List<String> actual = lionAlex.getFriends();
         List<String> expected = List.of("Марти", "Глория", "Мелман");
         assertEquals(expected, actual);
     }
 
     @Test
-    public void getPlaceOfLivingReturnNewYorkZooPositiveResult() {
+    public void getPlaceOfLivingReturnNewYorkZoo() {
         String actual = lionAlex.getPlaceOfLiving();
         String expected = "Нью-Йоркский зоопарк";
         assertEquals(expected, actual);
     }
 
     @Test
-    public void getKittensWithArgumentReturnIntPositiveResult() {
-        int actual = lionAlex.getKittens(3);
-        int expected = 3;
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void getKittensReturnZeroPositiveResult() {
+    public void getKittensReturnZero() {
         int actual = lionAlex.getKittens();
         int expected = 0;
         assertEquals(expected, actual);
