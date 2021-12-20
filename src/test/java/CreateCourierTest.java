@@ -47,6 +47,7 @@ public class CreateCourierTest {
         String isCreated = courierClient.createWithoutPasswordOrLogin(courier);
 
         assertEquals("Недостаточно данных для создания учетной записи", isCreated);
+
     }
 
     @Test
