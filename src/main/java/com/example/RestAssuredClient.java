@@ -6,9 +6,11 @@ import io.restassured.specification.RequestSpecification;
 
 public class RestAssuredClient {
 
+    static final String BASE_URL = "https://qa-scooter.praktikum-services.ru";
+
     public RequestSpecification getBaseSpec() {
         return new RequestSpecBuilder().setContentType(ContentType.JSON)
-                .setBaseUri("https://qa-scooter.praktikum-services.ru")
+                .setBaseUri(BASE_URL)
                 .build();
     }
 }

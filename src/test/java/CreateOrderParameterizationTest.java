@@ -31,7 +31,7 @@ public class CreateOrderParameterizationTest {
     }
 
     @Test
-    public void orderScooterCode201() {
+    public void orderScooterSuccess() {
         CreateOrder createOrder = CreateOrder.getRandomOrder();
         createOrder.setColor(color);
         Integer orderTrack = createOrderClient.createOrder(createOrder);

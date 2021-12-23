@@ -1,4 +1,6 @@
 import com.example.*;
+import io.restassured.response.ValidatableResponse;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,61 +11,75 @@ import static org.junit.Assert.assertTrue;
 
 public class CourierCreateTest {
 
-    ScooterRegisterCourier generationCouriers = new ScooterRegisterCourier();
-
-    public CourierClient courierClient;
+    private final ScooterRegisterCourier generationCouriers = new ScooterRegisterCourier();
+    private CourierClient courierClient;
+    private Integer courierId;
 
     @Before
     public void setUp() {
         courierClient = new CourierClient();
     }
 
-    @Test
-    public void creatingCourierWithRequiredFieldsCode201() {
-        Courier courier = new CourierBuilder()
-                .setRandomParams()
-                .build();
-        boolean isCreated = courierClient.create(courier);
-        assertTrue("Courier is not created", isCreated);
-
-        clearData(courier);
+    @After
+    public void clearData() {
+        if (courierId != null) {
+            ValidatableResponse response = courierClient.delete(courierId);
+            response.assertThat().statusCode(200);
+        }
     }
 
     @Test
-    public void createCourierWithRequiredFieldsAndFirstNameCode201() {
+    public void creatingCourierWithRequiredFieldsSuccess() {
         Courier courier = new CourierBuilder()
                 .setRandomParams()
                 .build();
-        boolean isCreated = courierClient.create(courier);
+        ValidatableResponse response = courierClient.create(courier);
+        response.assertThat().statusCode(201);
+        boolean isCreated = response.extract().path("ok");
         assertTrue("Courier is not created", isCreated);
-
-        clearData(courier);
+        ValidatableResponse loginResponse = courierClient.login(CourierCredentials.getCourierCredentials(courier));
+        loginResponse.assertThat()
+                .statusCode(200);
+        courierId = loginResponse.extract().path("id");
     }
 
     @Test
-    public void creatingCourierWithoutLogin400Error() {
+    public void createCourierWithRequiredFieldsAndFirstNameSuccess() {
+        Courier courier = new CourierBuilder()
+                .setRandomParams()
+                .build();
+        ValidatableResponse response = courierClient.create(courier);
+        response.assertThat().statusCode(201);
+        boolean isCreated = response.extract().path("ok");
+        assertTrue("Courier is not created", isCreated);
+    }
+
+    @Test
+    public void creatingCourierWithoutLoginWithError() {
         Courier courier = new CourierBuilder()
                 .setRandomPassword()
                 .build();
-        String isCreated = courierClient.createWithoutPasswordOrLogin(courier);
+        ValidatableResponse response = courierClient.create(courier);
+        response.assertThat().statusCode(400);
+        String errorMessage = response.extract().path("message");
 
-        assertEquals("Недостаточно данных для создания учетной записи", isCreated);
-
+        assertEquals("Недостаточно данных для создания учетной записи", errorMessage);
     }
 
     @Test
-    public void creatingCourierWithoutPassword400Error() {
+    public void creatingCourierWithoutPasswordWithError() {
         Courier courier = new CourierBuilder()
                 .setRandomLogin()
                 .build();
-        String isCreated = courierClient.createWithoutPasswordOrLogin(courier);
+        ValidatableResponse response = courierClient.create(courier);
+        response.assertThat().statusCode(400);
+        String errorMessage = response.extract().path("message");
 
-        assertEquals("Недостаточно данных для создания учетной записи", isCreated);
+        assertEquals("Недостаточно данных для создания учетной записи", errorMessage);
     }
 
-
     @Test
-    public void createCourierExistingLoginWillReceive409Error() {
+    public void createCourierExistingLoginWillReceiveWithError() {
         ArrayList<String> loginPass = generationCouriers.registerNewCourierAndReturnLoginPassword();
         Courier courier = new CourierBuilder()
                 .setRandomFirstName()
@@ -71,12 +87,15 @@ public class CourierCreateTest {
                 .setLogin(loginPass.get(0))
                 .build();
 
-        String isCreated = courierClient.createWithExistParams(courier);
-        assertEquals("Этот логин уже используется. Попробуйте другой.", isCreated);
+        ValidatableResponse response = courierClient.create(courier);
+        response.assertThat().statusCode(409);
+        String errorMessage = response.extract().path("message");
+
+        assertEquals("Этот логин уже используется. Попробуйте другой.", errorMessage);
     }
 
     @Test
-    public void creatingTwoIdenticalCouriers409Error() {
+    public void creatingTwoIdenticalCouriersWithError() {
         ArrayList<String> loginPass = generationCouriers.registerNewCourierAndReturnLoginPassword();
         Courier courier = new CourierBuilder()
                 .setLogin(loginPass.get(0))
@@ -84,13 +103,11 @@ public class CourierCreateTest {
                 .setFirstName(loginPass.get(2))
                 .build();
 
-        String isCreated = courierClient.createWithExistParams(courier);
-        assertEquals("Этот логин уже используется. Попробуйте другой.", isCreated);
-    }
+        ValidatableResponse response = courierClient.create(courier);
+        response.assertThat().statusCode(409);
+        String errorMessage = response.extract().path("message");
 
-    private void clearData(Courier courier) {
-        int courierId = courierClient.login(CourierCredentials.getCourierCredentials(courier));
-        courierClient.delete(courierId);
+        assertEquals("Этот логин уже используется. Попробуйте другой.", errorMessage);
     }
 }
 

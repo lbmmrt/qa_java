@@ -21,7 +21,7 @@ public class ScooterRegisterCourier {
                 .and()
                 .body(registerRequestBody)
                 .when()
-                .post("https://qa-scooter.praktikum-services.ru/api/v1/courier");
+                .post(RestAssuredClient.BASE_URL + "/api/v1/courier");
 
         if (response.statusCode() == 201) {
             loginPass.add(registerRequestBody.getLogin());

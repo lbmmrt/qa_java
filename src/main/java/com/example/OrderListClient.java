@@ -1,28 +1,21 @@
 package com.example;
 
 import io.qameta.allure.Step;
-import io.restassured.response.Response;
-
-import java.util.ArrayList;
+import io.restassured.response.ValidatableResponse;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class OrderListClient extends RestAssuredClient {
 
-    private final static String COURIER_PATH = "/api/v1/orders?courierId=";
+    private final static String COURIER_PATH = "/api/v1/orders";
 
     @Step("get order list")
-    public ArrayList<String> getOrderList() {
+    public ValidatableResponse getOrderList() {
         return given()
                 .spec(getBaseSpec())
                 .when()
                 .get(COURIER_PATH)
                 .then()
-                .log().all()
-                .assertThat()
-                .statusCode(200)
-                .extract()
-                .path("orders");
+                .log().all();
     }
 }
